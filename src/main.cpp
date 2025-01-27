@@ -3,8 +3,8 @@
 // #include <fstream>
 
 // 声明 decoration
-void Log(const char* message);
-int Multiply(int a , int b);
+// void Log(const char* message);
+// int Multiply(int a , int b);
 
 int main (int argc, char *argv[])
 {
@@ -28,7 +28,12 @@ int main (int argc, char *argv[])
     // return 0;
 
     // Log("Hello world");
-    std::cout << Multiply(2, 3) << std::endl;
+
+    int variable = 8; // -2^31 - 2^31(int 存储为 4B, 即 32 位，其中 1 位为符号位，即 -2^31 到 2^31-1, 即 -2.147e9 到 2.147e)
+    unsigned variable_always_positive = 8; // 0 - 2^32-1, 即 0 到 4.295e
+
+    std::cout << variable << std::endl;
+    std::cout << variable_always_positive << std::endl;
     std::cin.get();
 }
 
