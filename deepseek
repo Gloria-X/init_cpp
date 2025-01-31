@@ -1,0 +1,200 @@
+>>> c++怎么开发一个新的windows或linux命令
+<think>
+好，我现在想在C++里开发一个新CMD窗口或者Linux终端应用。我对CMD了解一下，比如打开cmd输入cmd /k "程序名"这种语法，但具体要
+怎么实现还不太清楚。
+
+首先，我需要确定是用Windows还是Linux系统。假设是Windows吧，因为我比较熟悉CMD的结构。那么，使用什么框架比较好呢？听说
+WTL（Win Threading Layer）是一个好的选择，因为它提供了Win32 API的低级别接口，适合创建自己的应用程序。
+
+那我得从头开始，先确定项目类型。应该是Win32 Application，这样编译出来的程序才能运行在Windows上。接下来，构建工具应该选
+MSBuild，这个是Visual Studio的一部分，比较常用而且功能强大。
+
+然后，我在项目的密钥里填入微软的密钥，生成密钥后需要激活项目。激活的时候要输入我的开发者ID和订阅信息，这部分可能有点麻烦
+，不过我应该有这些信息吧？
+
+接下来是解决方案。因为我要创建一个CMD类似于窗口模式，所以我需要使用WTL中的Window32 API。可能还需要第三方库，比如
+Shell32 utilities，这样就能实现一些系统调用，比如调用cmd命令了。
+
+在项目的密钥里，添加这个第三方库的URL，然后在配置项中选中它们。这一步可能会有点复杂，我需要确保路径正确，否则编译不出来
+。
+
+接下来是编写代码结构。项目应该包括一个Solution文件，里面有几个项目：一个是CMD窗口本身，另一个可能是用来模拟命令输入的部
+分。比如cmd_input.ch是处理用户输入的程序，cmd_display.h和cmd_display.ch是显示窗口的部分。
+
+在cmd_input.ch里，我需要写一些函数来处理用户的输入事件，比如按下回车时执行命令或者退出。这部分可能需要消息队列机制，比如
+SendMessageToWindow和SendMessageBackMessage。
+
+cmd_display.h应该包含窗口创建的结构体，设置标题、风格等等。cmd_display.ch是实现这些结构体的方法，包括创建窗口、设置标题
+、颜色和处理显示事件。
+
+在main.cpp里，我需要用win32系统调用来初始化系统，创建窗口，加载所需库，然后调用cmd_input函数作为消息处理函数。最后，主循
+环不断监听消息，直到退出。
+
+关于运行的时候，可能需要调整启动文件，让它出现在开始菜单的程序中。这可能涉及到修改regsvr32的注册表项，或者在CMD启动时添
+加startup路径。
+
+不过我对这些细节还不太熟悉，可能需要查阅一些文档或者示例项目来辅助开发。另外，编译的时候可能会遇到很多问题，比如找不到库
+或者编译错误，这时候就需要仔细检查配置和代码中的每一步是否正确。
+
+总的来说，我需要一步步按照WTL的框架构建CMD窗口，同时加载必要的系统调用库，编写处理命令输入和显示操作的函数，并确保程序能
+够稳定运行。可能中间会遇到很多问题，但通过查阅资料和调试应该能解决。
+</think>
+
+为了在C++中开发一个新CMD窗口或Linux终端应用，可以按照以下步骤进行：
+
+### 1. 确定操作系统
+- **Windows**：使用WTL（Win Threading Layer）框架。
+- **Linux**：推荐使用 FLTK 库，因为它支持跨平台，并且在Linux上比较常用。
+
+### 2. 设置项目类型和工具
+- 使用 Visual Studio 编译并链接程序。
+- 设置项目类型为 Win32 Application（Windows）或 FLTK (Gstreamer) Application（Linux）。
+
+### 3. 添加第三方库
+- **Windows**：添加 Shell32 utilities 库，用于调用系统调用如 cmd。
+- **Linux**：在构建阶段加载 FLTK 库及其依赖项。
+
+### 4. 编写代码结构
+
+#### a. CMD窗口类（ windows.h 和 windows.cpp）
+- 使用WTL中的Window32 API创建窗口。
+```cpp
+// windows.h
+#include <windows.h>
+#include <wingdi.h> // 如果需要显示绘制功能
+
+LCCAPI Windows WtlWindows::CreateWindow(HWND h, MSG* pMsg) {
+    WINDOWalicw win;
+    if (GetLastWindow() == SWINDOW(-1)) {
+        GetNextWindow(WIN titles, WIN style, WLLASTW, &win);
+        SetWindowStyle(HWND, HTitles, WLLASTW);
+    } else {
+        CreateWindowRect(h, pMsg, WIN titles, WIN style, WLLASTW,
+                         WBLastAction, WBLastTime, 0, 0, FALSE);
+    }
+    return WINtitles;
+}
+
+// windows.cpp
+HWND WtlWindows::SendMessageToWindow(HWND h) {
+    SendMessageToWindow(hWnd, CMD cmd, L_UINT flags, L_STRING title,
+                       L_STRING prompt);
+    SendMessageBackMessage(hWnd, 0);
+}
+```
+
+#### b. 命令处理类（cmd_input.h 和 cmd_input.cpp）
+```cpp
+// cmd_input.h
+#include <message.h> // 如果使用消息队列
+
+HWND msgInput;
+ MsgMap messageMap;
+
+void* WINAPI cmd_input(HWND h, MSG *m) {
+    if (IsMInQueue(MQ SendToWindow)) {
+       SendMessageToWindow(h);
+    } else if (IsMInQueue(MQ SendBackMessage)) {
+        SendBackMessage(msgInput, 0);
+    }
+}
+
+// cmd_input.cpp
+void WtlCmdInput::Register(HWND h) {
+    MsgMapAdd(mq_SendToWindow, SENDTOWINDOW, MQ党中央,
+              "输入命令", MSG_MAP_PRIORITY_DEFAULT);
+    MsgMapAdd(mq.SendBackMessage, SENDBACKMESSAGE, MQ中央,
+              "回车退出", MSG_MAP_PRIORITY_DEFAULT);
+
+    if (GetLastWindow() == SWINDOW(-1)) {
+        GetNextWindow(WIN titles, WIN style, WLLASTW,
+                     &msgInput->hwnd, &msgInput->messageMap);
+    }
+}
+```
+
+#### c. 显示窗口类（cmd_display.h 和 cmd_display.cpp）
+```cpp
+// cmd_display.h
+void* WINAPI cmd_display(HWND h, Msg msg) {
+    if (GetLastWindow() == SWINDOW(-1)) {
+        GetNextWindow(WIN titles, WIN style, WLLASTW,
+                     &hwnd->hwnd, &hwnd->messageMap);
+    }
+}
+
+// cmd_display.cpp
+void WtlCmdDisplay::CreateWindow(HWND hwnd) {
+    CreateWindowRect(hwnd, NULL, WIN CMD consol title, CONSOLE_DIALOG style,
+                    WLLASTW, WBLastAction, WBLastTime, 0, 0, FALSE);
+
+    HWND CurrentWindow = FindWindow(WIN titles, "CMD窗口");
+    if (CurrentWindow == HNULL) {
+        CurrentWindow = hwnd;
+    }
+
+    SetWindowStyle(HWND, HTitles, WLLASTW);
+    ShowWindow(hwnd);
+}
+```
+
+### 5. 编写主程序（main.cpp）
+```cpp
+#include <windows.h>
+#include "cmd_input.h"
+#include "cmd_display.h"
+
+void* WINAPI MsgHandle(HWND h, MSG *m) {
+    if (IsMInQueue(MQ SendToWindow)) {
+        SendMessageToWindow(h);
+    } else if (IsMInQueue(MQ SendBackMessage)) {
+        SendBackMessage(msgInput, 0);
+    }
+}
+
+int WINAPI WinMain(HINSTANCE hInst, UNIVARPARAM, UNIVARPARAM, UNIVARPARAM) {
+    MSG q;
+    WTL windows = CreateWindow(HWND, NULL, WIN CMD consol title, CONSOLE_DIALOG style,
+                             WLLASTW, WBLastAction, WBLastTime, 0, 0, FALSE);
+
+    msgInput = &q;
+
+    if (Register(WINDOWS) != 0) {
+        LogError("WinMain failed to create window");
+        return;
+    }
+
+    ShowWindow(WINDOWS, NULL);
+
+    MSG qMsg;
+    while ((LPCWSTR w) != NULL) {
+        if (GetLastMessage(MSG Default)) {
+            MsgHandle(WINDOWS, &qMsg);
+            if (FindWindow(WIN titles, "CMD窗口") == HNULL || FindWindow(WIN prompts title, "命令输入") == HNULL)
+{
+                break;
+            }
+        } else if (SendMessageToWindow(WINDOWS) != 0) {
+            LogError("SendMessageToWindow failed");
+            return;
+        }
+
+        Sleep(100);
+    }
+
+    MsgFree(&qMsg);
+    PostMessage(WINDOWS, NULL, 0, 0);
+
+    DestroyWindow(WINDOWS, TRUE);
+}
+```
+
+### 6. 添加启动文件
+确保CMD程序出现在开始菜单的程序列表中，这可以通过修改注册表或在CMD启动时添加startup路径来实现。
+
+### 7. 运行和测试
+- 打开CMD窗口，输入命令进行测试。
+- 根据需要调整消息处理、窗口显示和其他功能。
+
+通过以上步骤，您可以在Windows系统上开发一个类似于CMD的终端应用。对于Linux系统，可以使用FLTK框架并相应地修改代码以适
+应Linux环境。

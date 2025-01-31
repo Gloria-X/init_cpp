@@ -1,40 +1,62 @@
-// 预处理语句
 #include <iostream>
-// #include <fstream>
+#include <sstream>
+#include <string>
+#include <vector>
+#include "cat.h"
 
-// 声明 decoration
-// void Log(const char* message);
-// int Multiply(int a , int b);
+using namespace std;
 
-int main (int argc, char *argv[])
-{
+int main() {
+    string input;
+    
+    cout << "Please enter a command (e.g., init linux):" << endl;
+    getline(cin, input);
 
-    // 记录程序运行日志到文件
-    // std::ofstream log("output.log");
-    // log << "Hello world" << std::endl;
-    // log.close();
+    if (input == "init linux") {
+        cout << "Entering init_linux environment..." << endl;
+        cout << "init_linux> ";
+        
+        while (true) {
+            getline(cin, input);
 
-    // << 重载运算符，实际是个函数，相当于 std::cout.print("Hello world").print(std::endl); 
-    // endl 告诉终端跳到下一行
-    // std::cout << "Hello world" << std::endl; 
+            stringstream ss(input); // 将字符串视为流对象
+            vector<string> args; // 动态数组，用来存储分割后的字符串
+            string temproray_storage; // 临时存储拆分后的字符串
 
-    // // 等待按回车
-    // std::cin.get();
+            while (ss >> temproray_storage) {
+                args.push_back(temproray_storage);  // 按空格拆分命令
+            }
 
-    // 等待按任意键继续
-    // std::system("pause");
+            if (args.empty()) continue;
 
-    // main function 可以没有返回值，此时默认返回 0;
-    // return 0;
+            string command = args[0];
 
-    // Log("Hello world");
+            if (command == "scp") {
+                cout << "Executing SCP command..." << endl;
+            } 
+            else if (command == "cat") {
+                if (args.size() == 1) {
+                    std::cout << "Error: Please provide a valid file path." << std::endl;
+                    showCatUsage();
+                } else {
+                    ReadFile(args[1]);
+                }
+            }
+            else if (command == "exit") {
+                cout << "Exiting init_linux environment..." << endl;
+            } 
+            else {
+                cout << "Invalid command! Please enter a valid command." << endl;
+            }
+            
+            cout << "init_linux> ";
+        }
+    } 
+    else {
+        cout << "Invalid initial command!" << endl;
+    }
 
-    int variable = 8; // -2^31 - 2^31(int 存储为 4B, 即 32 位，其中 1 位为符号位，即 -2^31 到 2^31-1, 即 -2.147e9 到 2.147e)
-    unsigned variable_always_positive = 8; // 0 - 2^32-1, 即 0 到 4.295e
-
-    std::cout << variable << std::endl;
-    std::cout << variable_always_positive << std::endl;
-    std::cin.get();
+    return 0;
 }
 
 // cmake --build .
