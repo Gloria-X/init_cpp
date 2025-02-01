@@ -3,7 +3,9 @@
         {
             "name": "Win64",
             "includePath": [
-                "${workspaceFolder}/**"
+                "${workspaceFolder}/**",
+                "C:\\Software\\vcpkg\\installed\\x64-windows\\include"
+
             ],
             "defines": [
                 "_DEBUG",

@@ -33,7 +33,7 @@ int main() {
 
             if (command == "scp") {
                 cout << "Executing SCP command..." << endl;
-            } 
+            }
             else if (command == "cat") {
                 if (args.size() == 1) {
                     std::cout << "Error: Please provide a valid file path." << std::endl;

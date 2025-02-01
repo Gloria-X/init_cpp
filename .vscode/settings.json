@@ -1,5 +1,6 @@
 {
-    "cmake.cmakePath": "C:\\Software\\cmake-3.27.0-windows-x86_64\\bin\\cmake.exe",
+    "cmake.cmakePath": "C:\\Software\\CMake\\bin\\cmake.exe",
+    "C_Cpp.default.compilerPath": "C:\\Program Files (x86)\\Microsoft Visual Studio\\2022\\BuildTools\\VC\\Tools\\MSVC\\14.42.34433\\bin\\Hostx64\\x64\\cl.exe",
     "files.associations": {
       "iosfwd": "cpp",
       "iostream": "cpp",
