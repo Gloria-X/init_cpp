@@ -11,5 +11,10 @@ add_executable(init_cpp ${SRC_FILES})
 
 set(CMAKE_TOOLCHAIN_FILE "C:/Software/vcpkg/scripts/buildsystems/vcpkg.cmake") # 包含 vcpkg 的路径, VSCode 和 CMake 会自动配置好 libssh2 库路径
 
-
+# 链接 libssh2 和 Winsock 库
+target_link_libraries(init_cpp
+    PRIVATE
+    C:/Software/vcpkg/installed/x64-windows/lib/libssh2.lib
+    ws2_32
+)
 

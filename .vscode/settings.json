@@ -47,7 +47,25 @@
       "ostream": "cpp",
       "stdexcept": "cpp",
       "streambuf": "cpp",
-      "typeinfo": "cpp"
+      "typeinfo": "cpp",
+      "source_location": "cpp",
+      "bitset": "cpp",
+      "charconv": "cpp",
+      "chrono": "cpp",
+      "codecvt": "cpp",
+      "complex": "cpp",
+      "cstring": "cpp",
+      "ctime": "cpp",
+      "expected": "cpp",
+      "ratio": "cpp",
+      "format": "cpp",
+      "iomanip": "cpp",
+      "semaphore": "cpp",
+      "span": "cpp",
+      "sstream": "cpp",
+      "stop_token": "cpp",
+      "thread": "cpp",
+      "variant": "cpp"
     } // 此处指定自己安装的cmake.exe地址
   }
   

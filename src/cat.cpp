@@ -6,7 +6,7 @@ using namespace std;
 
 void showCatUsage() {
     std::cout << "Usage" << std::endl;
-    std::cout << "        cat <path>" << std::endl;
+    std::cout << "    cat <path>" << std::endl;
 }
 
 void ReadFile(const string& path) {
