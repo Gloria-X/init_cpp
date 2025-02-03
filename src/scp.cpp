@@ -17,7 +17,8 @@ using namespace std;
 
 void showSCPUsage() {
     std::cout << "Usage" << std::endl;
-    std::cout << "    scp <username>@<IP>:<remote_path> <local_path>\n\n" << std::endl;
+    std::cout << "    scp <username>@<IP>:<remote_path> <local_path>" << std::endl;
+    std::cout << "    scp -p <port> <username>@<IP>:<remote_path> <local_path>\n\n" << std::endl;
     std::cout << "Arguments:\n";
     std::cout << "    <username>     : The username for the remote host.\n";
     std::cout << "    <IP>           : The IP address of the remote host.\n";
