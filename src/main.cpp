@@ -74,8 +74,9 @@ int main() {
                         remoteHost = remoteHostAndFile.substr(0, colonPos);
                         remoteFile = remoteHostAndFile.substr(colonPos + 1);
 
-                        string keyFile = "C:\\Users\\Gloria_X\\.ssh\\id_ed25519.ppk";
-                        string password = "your_password"; // 初始密码
+                        string privateKeyFile = "C:\\Users\\Gloria_X\\.ssh\\id_ed25519";
+                        string publicKeyFile = "C:\\Users\\Gloria_X\\.ssh\\id_ed25519.pub";
+                        string password = "init";
 
                         cout << "Username: " << username << endl;
                         cout << "Remote Host: " << remoteHost << endl;
@@ -83,19 +84,30 @@ int main() {
                         cout << "Remote File: " << remoteFile << endl;
                         cout << "Local File: " << localFile << endl;
 
-                        // // 尝试使用密钥文件进行连接
-                        // if (ssh_connect(remoteHost, port, username, "", keyFile, NULL, NULL) != 0) {
-                        //     cout << "SSH connection failed. Please enter password:" << endl;
-                        //     cin >> password; // 用户重新输入密码
-                        //     if (ssh_connect(remoteHost, 22, username, password, "", NULL, NULL) != 0) {
-                        //         cerr << "Failed to connect using password" << endl;
-                        //         return 1;
-                        //     }
-                        // }
+                        if (ssh_connect(remoteHost, port, username, "", privateKeyFile, publicKeyFile) == 0) {
+                            // 如果使用密钥文件连接成功，直接调用 SCP
+                            SCP(remoteHost, port, username, "", privateKeyFile, publicKeyFile, remoteFile, localFile);
+                            cout << "SCP transfer completed successfully." << endl;
+                        } else {
+                            // 如果使用密钥文件连接失败，提示用户输入密码
+                            cout << "SSH connection failed. Please enter password:" << endl;
+                            cin >> password;
 
-                        // // 调用 SCP 方法
-                        // SCP(remoteHost, remoteFile, localFile, username, password);
-                    }
+                            // 使用密码重新尝试连接
+                            if (ssh_connect(remoteHost, port, username, password, "", "") == 0) {
+                                // 如果使用密码连接成功，调用 SCP
+                                SCP(remoteHost, port, username, password, "", "", remoteFile, localFile);
+                                cout << "SCP transfer completed successfully." << endl;
+                            } else {
+                                // 如果密码连接失败，输出错误信息并退出
+                                cerr << "Failed to connect using password" << endl;
+                                std::cin.get();
+                                return 1;
+                            }
+                        }
+
+                        std::cin.get();
+                    };
                 }
                 else if (command == "cat") {
                     if (args.size() == 1) {
@@ -128,4 +140,6 @@ int main() {
 }
 
 // cmake --build .
-// scp -p 45239 xusunyue@106.14.28.85:/home/user/file.txt /local/destination/
+// .\init_cpp.exe > output.log 2>&1
+// scp -p 45239 xusunyue@106.14.28.85:/home/xusunyue/.ssh/authorized_keys C:\\code\\\xsy\\init_cpp\\authorized_keys
+// C:\code\xsy\init_cpp\authorized_keys
